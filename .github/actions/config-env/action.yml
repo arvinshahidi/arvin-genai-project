@@ -35,6 +35,8 @@ runs:
             export AZURE_DEV_COLLECT_TELEMETRY=no            
         fi      
 
+
+
     - name: Install Azure Developer CLI 
       uses: Azure/setup-azd@v2.1.0
 
