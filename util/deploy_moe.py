@@ -74,6 +74,7 @@ def deploy_flow(endpoint_name, deployment_name):
     deployment = ManagedOnlineDeployment(
         name=deployment_name,
         endpoint_name=endpoint_name,
+
         model=Model(
             name="ragflow",
             path=flow_path,  # path to promptflow folder
@@ -84,6 +85,7 @@ def deploy_flow(endpoint_name, deployment_name):
                 ["azureml.promptflow.chat_output", "answer"]
             ]
         ),
+
         environment=Environment(
             build=BuildContext(
                 path=flow_path,
@@ -112,6 +114,9 @@ def deploy_flow(endpoint_name, deployment_name):
             "PRT_CONFIG_OVERRIDE": f"deployment.subscription_id={client.subscription_id},deployment.resource_group={client.resource_group_name},deployment.workspace_name={client.workspace_name},deployment.endpoint_name={endpoint_name},deployment.deployment_name={deployment_name}",
             "AZURE_SUBSCRIPTION_ID": os.environ["AZURE_SUBSCRIPTION_ID"],
             "AZURE_RESOURCE_GROUP": os.environ["AZURE_RESOURCE_GROUP"],
+            "AZURE_TENANT_ID": os.environ["AZURE_TENANT_ID"],
+            "AZURE_CLIENT_ID": os.environ["AZURE_CLIENT_ID"],
+            "AZURE_CLIENT_SECRET": os.environ["AZURE_CLIENT_SECRET"],
             "AZUREAI_PROJECT_NAME": os.environ["AZUREAI_PROJECT_NAME"],
             "AZURE_OPENAI_ENDPOINT": azure_config.aoai_endpoint,
             "AZURE_OPENAI_API_VERSION": azure_config.aoai_api_version,
@@ -209,8 +214,6 @@ def create_role_assignment(scope, role_name, principal_id):
         print("Role assignment already exists.")
     except Exception as e:
         print(f"An error occurred during role assignment: {e}")
-
-
 
 
 if __name__ == "__main__":
